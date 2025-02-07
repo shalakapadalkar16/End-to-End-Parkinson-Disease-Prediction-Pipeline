@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parkinson-model
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-service
+  template:
+    metadata:
+      labels:
+        app: model-service
+    spec:
+      containers:
+      - name: model-container
+        image: us-central1-docker.pkg.dev/driven-lore-443500-t9/model-registry-2/model-predict:latest
+        command:  ["python", "app.py"]
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PORT
+          value: "8080"
+        resources:
+          requests:
+            cpu: 1
+            memory: 2Gi
+          limits:
+            cpu: 2
+            memory: 4Gi
+      imagePullSecrets:
+      - name: artifact-registry-credentials
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: model-service
+  ports:
+    - port: 80
+      targetPort: 8080
