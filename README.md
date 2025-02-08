@@ -16,6 +16,8 @@ The raw data is stored in **GCP Storage**, where it is retrieved, preprocessed, 
 ## Architecture & Workflow
 The workflow is implemented using **Airflow**, **Docker**, **MLflow**, and **Google Cloud Services**. Below is an overview of the architecture:
 
+![Project Workflow](images/Parkinson disease prediction workflow.jpeg)
+
 ### **1. Data Pipeline (Airflow DAG)**
 - Retrieves raw data files from **GCP Storage**.
 - Preprocesses the data:
